@@ -1,6 +1,6 @@
-import Layout from "containers/Layout";
-import React from "react";
-import { Helmet } from "react-helmet";
+import Layout from 'containers/Layout';
+import React from 'react';
+import { Helmet } from 'react-helmet';
 
 const NotFound: React.FC = (): JSX.Element => {
   return (
@@ -9,7 +9,9 @@ const NotFound: React.FC = (): JSX.Element => {
         <meta charSet="utf-8" />
         <title>Not found</title>
       </Helmet>
-      <Layout>404</Layout>
+      <Layout>
+        <p className="w-32 mx-auto font-semibold">404 Not found</p>
+      </Layout>
     </>
   );
 };
