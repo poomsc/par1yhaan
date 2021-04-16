@@ -65,7 +65,6 @@ const SigninPage: React.FC = observer(
               />
               <br />
               <Button
-                type="submit"
                 variant="contained"
                 color="primary"
                 style={{ minWidth: '180px', margin: 'auto' }}

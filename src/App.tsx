@@ -31,7 +31,7 @@ const App = observer(() => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => setUser(user));
     return unsubscribe;
-  }, []);
+  }, [setUser]);
 
   return (
     <ThemeProvider theme={theme}>

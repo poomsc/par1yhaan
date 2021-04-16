@@ -24,7 +24,7 @@ const AlertModal = observer(
         setAlertInfo({ message: '', type: '' });
       }, 4000);
       return () => clearTimeout(timer);
-    }, [message]);
+    }, [message, setAlertInfo, showAlert]);
 
     const bg_color: bgAlertType = {
       info: 'bg-blue-400',

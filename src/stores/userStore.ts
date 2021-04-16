@@ -1,5 +1,10 @@
 import { action, observable, makeAutoObservable } from 'mobx';
-import { writeUserData, readUserData, updateCurrentDenominator } from 'services/databaseService';
+import {
+  writeUserData,
+  readUserData,
+  updateCurrentDenominator,
+  createParty,
+} from 'services/databaseService';
 import { auth } from 'services/firebase';
 
 export interface IUserStore {
@@ -49,8 +54,8 @@ export class UserStore implements IUserStore {
   @action unjoinParty = (partyId: number, currentDenominator: number): void => {
     this.joinedPartyList = removeItemOnce(this.joinedPartyList, partyId);
     this.updateUserInfo();
-    console.log("cur", currentDenominator);
-    
+    console.log('cur', currentDenominator);
+
     updateCurrentDenominator(partyId, currentDenominator - 1);
   };
 
@@ -92,5 +97,11 @@ export class UserStore implements IUserStore {
       favoriteList: this.favoriteList,
       joinedPartyList: this.joinedPartyList,
     });
+  };
+
+  @action createOwnParty = async (data: any) => {
+    const partyId = await createParty(data);
+    this.joinParty(partyId, 0);
+    return true;
   };
 }

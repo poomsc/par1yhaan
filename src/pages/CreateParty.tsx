@@ -3,14 +3,13 @@ import { Button, TextField } from '@material-ui/core';
 import Layout from 'containers/Layout';
 import { Helmet } from 'react-helmet';
 import { useHistory } from 'react-router';
-import { createParty } from 'services/databaseService';
 import { observer } from 'mobx-react';
 import { useStores } from 'hooks/useStore';
 
 const CreateParty: React.FC = observer(
   (): JSX.Element => {
     const {
-      userStore: { userEmail },
+      userStore: { userEmail, createOwnParty },
     } = useStores();
     const [eventName, setEventName] = useState<string>();
     const [denominator, setDenominator] = useState<number>();
@@ -24,7 +23,7 @@ const CreateParty: React.FC = observer(
       const data = {
         eventName,
         denominator,
-        currentDenominator: 1,
+        currentDenominator: 0,
         price,
         originalPrice,
         expDate,
@@ -32,7 +31,7 @@ const CreateParty: React.FC = observer(
         pictureUrl,
       };
       try {
-        await createParty(data);
+        await createOwnParty(data)
         history.push('/home');
       } catch (e) {
         console.log(e);

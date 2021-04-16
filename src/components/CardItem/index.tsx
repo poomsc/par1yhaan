@@ -48,7 +48,7 @@ const CardItem = observer(
       if (Date.parse(expDate) > Date.now()) setItemStatus(0);
       else if (currentDenominator < denominator) setItemStatus(1);
       else setItemStatus(2);
-    }, []);
+    }, [currentDenominator, denominator, expDate]);
 
     return (
       <>

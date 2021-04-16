@@ -27,7 +27,8 @@ async function readUserData(email: string) {
 async function createParty(data: any) {
   await increasePartyId();
   const partyId = await getCurrentPartyId();
-  database.ref('party/' + partyId).set(data);
+  await database.ref('party/' + partyId).set(data);
+  return partyId;
 }
 
 async function getAllParty() {
