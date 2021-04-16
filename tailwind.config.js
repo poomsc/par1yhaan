@@ -1,4 +1,4 @@
-const colors = require('tailwindcss/colors')
+const colors = require('tailwindcss/colors');
 
 module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
@@ -80,7 +80,11 @@ module.exports = {
     backdropOpacity: (theme) => theme('opacity'),
     backdropSaturate: (theme) => theme('saturate'),
     backdropSepia: (theme) => theme('sepia'),
-    backgroundColor: (theme) => theme('colors'),
+    backgroundColor: (theme) => ({
+      ...theme('colors'),
+      primary: '#20639b',
+      'primary-dark': '#173f5f',
+    }),
     backgroundImage: {
       none: 'none',
       'gradient-to-t': 'linear-gradient(to top, var(--tw-gradient-stops))',
@@ -134,7 +138,8 @@ module.exports = {
     },
     borderColor: (theme) => ({
       ...theme('colors'),
-      DEFAULT: theme('colors.gray.200', 'currentColor'),
+      primary: '#20639b',
+      'primary-dark': '#173f5f',
     }),
     borderOpacity: (theme) => theme('opacity'),
     borderRadius: {
@@ -686,7 +691,11 @@ module.exports = {
       1: '1',
       2: '2',
     },
-    textColor: (theme) => theme('colors'),
+    textColor: (theme) => ({
+      ...theme('colors'),
+      primary: '#20639b',
+      'primary-dark': '#173f5f',
+    }),
     textOpacity: (theme) => theme('opacity'),
     transformOrigin: {
       center: 'center',
@@ -960,4 +969,4 @@ module.exports = {
     zIndex: ['responsive', 'focus-within', 'focus'],
   },
   plugins: [],
-}
+};
