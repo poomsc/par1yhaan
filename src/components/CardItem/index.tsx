@@ -3,9 +3,9 @@ import { Button } from '@material-ui/core';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { GrGroup, GrClock } from 'react-icons/gr';
 import eventType from 'types/eventType';
-import Countdown from 'react-countdown';
 import { observer } from 'mobx-react';
 import { useStores } from 'hooks/useStore';
+import CountdownTimer from './Countdown';
 
 type PropType = {
   eventData: eventType;
@@ -52,7 +52,7 @@ const CardItem = observer(
 
     return (
       <>
-        <div className="w-1/2 sm:w-1/3 md:w-1/4 py-2 px-1 md:px-2">
+        <div className="min-w-50 w-1/2 sm:w-1/3 lg:w-1/4 py-2 px-1 md:px-2">
           <div className="bg-white shadow-xl rounded-lg">
             <div
               className="bg-cover bg-center h-56 rounded-lg"
@@ -96,7 +96,7 @@ const CardItem = observer(
                 </div>
               </div>
             </div>
-            <div className="flex justify-between p-4 border-t border-gray-300 text-gray-700">
+            <div className="flex justify-between p-2 md:p-4 border-t border-gray-300 text-gray-700">
               <div className="justify-start">
                 <div className="flex items-center">
                   <GrGroup className="text-sm" />
@@ -106,8 +106,8 @@ const CardItem = observer(
                 </div>
                 <div className="flex items-center">
                   <GrClock className="text-sm" />
-                  <p className="px-2 text-xs">
-                    <Countdown date={Date.parse(expDate)} />
+                  <p className="pl-2 text-xs">
+                    <CountdownTimer expDate={expDate} />
                   </p>
                 </div>
               </div>

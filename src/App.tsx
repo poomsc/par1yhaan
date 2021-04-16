@@ -1,11 +1,11 @@
 import './App.css';
 import React, { useEffect } from 'react';
-import Routes from 'routes/index';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { auth } from 'services/firebase';
 import { observer } from 'mobx-react';
 import { useStores } from 'hooks/useStore';
 import AlertModal from 'components/Modal/AlertModal';
+import Routes from 'routes/index';
 
 const theme = createMuiTheme({
   palette: {

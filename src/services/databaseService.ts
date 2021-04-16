@@ -16,10 +16,10 @@ async function writeUserData({ uid, email, favoriteList, joinedPartyList }: user
   });
 }
 
-async function readUserData(email: string) {
+async function readUserData(uid: string) {
   const response = await database
     .ref()
-    .child('users/' + email)
+    .child('users/' + uid)
     .get();
   return response.val();
 }

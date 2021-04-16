@@ -543,6 +543,11 @@ module.exports = {
     },
     minWidth: {
       0: '0px',
+      '12': '3rem',
+      '50': '11.2rem',
+      '1/4': '25%',
+      '1/2': '50%',
+      '3/4': '75%',
       full: '100%',
       min: 'min-content',
       max: 'max-content',
