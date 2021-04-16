@@ -3,15 +3,9 @@ import Countdown from 'react-countdown';
 
 const renderer = ({ days, hours, minutes, seconds, completed }: any) => {
   if (completed) {
-    // Render a completed state
     return <p>หมดเวลา</p>;
   } else {
-    // Render a countdown
-    return (
-      <span>
-        {days}:{hours}:{minutes}
-      </span>
-    );
+    return <span>{days > 0 ? `${days}d ${hours}h` : `${hours}h ${minutes}m`}</span>;
   }
 };
 const CountdownTimer = ({ expDate }: { expDate: string }) => {

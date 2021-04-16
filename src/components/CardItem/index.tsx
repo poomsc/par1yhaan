@@ -53,7 +53,10 @@ const CardItem = observer(
     return (
       <>
         <div className="min-w-50 w-1/2 sm:w-1/3 lg:w-1/4 py-2 px-1 md:px-2">
-          <div className="bg-white shadow-xl rounded-lg">
+          <div
+            className="bg-white bg-opacity-50 focus-within:shadow-xl rounded-lg"
+            style={{ backdropFilter: 'blur(20px)' }}
+          >
             <div
               className="bg-cover bg-center h-56 rounded-lg"
               style={{
@@ -66,7 +69,7 @@ const CardItem = observer(
                 <div className="py-4">
                   <p
                     className="text-base text-white rounded-r-3xl px-4"
-                    style={{ backgroundColor: itemStatus === 0 ? '#10B981' : '#EF4444' }}
+                    style={{ backgroundColor: itemStatus === 0 ? '#5BA8A0' : '#EF4444' }}
                   >
                     {statusDescription[itemStatus]}
                   </p>
@@ -85,7 +88,7 @@ const CardItem = observer(
               </p>
               <div className="flex justify-between">
                 <div>
-                  <span className="text-base text-primary font-bold">฿{price}</span>
+                  <span className="text-base text-gray-700 font-bold">฿{price}</span>
                   <span className="text-xs text-gray-600">/คน</span>
                   <p className="text-gray-400 line-through text-xs">฿{originalPrice}</p>
                 </div>
@@ -114,7 +117,7 @@ const CardItem = observer(
               <div>
                 <Button
                   variant="contained"
-                  color={!isJoined ? 'primary' : 'secondary'}
+                  color={!isJoined ? "primary" : "secondary"}
                   disabled={itemStatus > 0}
                   onClick={() => handleOnJoinParty()}
                 >

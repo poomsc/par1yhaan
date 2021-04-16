@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Disclosure } from '@headlessui/react';
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
+import { BiBell } from 'react-icons/bi';
+import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
+
 import logo from 'assets/logo/goose.png';
 import { observer } from 'mobx-react';
 import { useStores } from 'hooks/useStore';
@@ -31,18 +33,22 @@ const Navbar = observer(() => {
   };
 
   return (
-    <Disclosure as="nav" className="bg-primary w-full fixed z-50">
+    <Disclosure
+      as="nav"
+      className="bg-white w-full fixed z-50 bg-opacity-60"
+      style={{ backdropFilter: 'blur(20px)' }}
+    >
       {({ open }) => (
         <>
           <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
             <div className="relative flex items-center justify-between h-16">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
-                <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:bg-white hover:bg-opacity-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   {open ? (
-                    <XIcon className="block h-6 w-6" aria-hidden="true" />
+                    <AiOutlineClose className="block h-6 w-6" aria-hidden="true" />
                   ) : (
-                    <MenuIcon className="block h-6 w-6" aria-hidden="true" />
+                    <AiOutlineMenu className="block h-6 w-6" aria-hidden="true" />
                   )}
                 </Disclosure.Button>
               </div>
@@ -60,8 +66,8 @@ const Navbar = observer(() => {
                         key={item.name}
                         className={classNames(
                           currentPath === item.link
-                            ? 'bg-primary-dark text-white'
-                            : 'text-gray-300 hover:bg-primary-dark hover:text-white',
+                            ? 'bg-white bg-opacity-75 text-black'
+                            : 'text-black hover:bg-white hover:bg-opacity-50 hover:text-gray-700',
                           'px-3 py-2 rounded-md text-sm font-medium',
                         )}
                         aria-current={currentPath === item.link ? 'page' : undefined}
@@ -73,9 +79,9 @@ const Navbar = observer(() => {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button className="bg-primary-dark p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                <button className="bg-white bg-opacity-75 p-1 rounded-full text-gray-600 hover:bg-white hover:bg-opacity-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                   <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
+                  <BiBell className="h-6 w-6" aria-hidden="true" />
                 </button>
 
                 <ProfileDropdown isLogin={isLogin} handleLogout={handleLogout} />
@@ -90,8 +96,8 @@ const Navbar = observer(() => {
                   key={item.name}
                   className={classNames(
                     currentPath === item.link
-                      ? 'bg-primary text-white'
-                      : 'text-gray-300 hover:bg-primary-dark hover:text-white',
+                      ? 'bg-white bg-opacity-75 text-black'
+                      : 'text-black hover:bg-white hover:bg-opacity-50 hover:text-gray-700',
                     'px-3 py-2 rounded-md text-sm font-medium',
                   )}
                   aria-current={currentPath === item.link ? 'page' : undefined}

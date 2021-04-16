@@ -19,8 +19,8 @@ const ProfileDropdown = ({ isLogin, handleLogout }: PropsType) => {
       {({ open }) => (
         <>
           <div>
-            <Menu.Button className="bg-primary-dark flex rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-              <MdAccountCircle className="text-white h-8 w-8" aria-hidden="true" />
+            <Menu.Button className="bg-white bg-opacity-75 text-gray-600 hover:bg-white hover:bg-opacity-50 hover:text-gray-900 flex rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+              <MdAccountCircle className=" h-8 w-8" aria-hidden="true" />
             </Menu.Button>
           </div>
           <Transition

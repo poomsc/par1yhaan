@@ -10,14 +10,12 @@ import Routes from 'routes/index';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#3caea3',
-      main: '#20639b',
-      dark: '#173f5f',
+      main: '#F1A104',
       contrastText: '#ffffff',
     },
     secondary: {
       light: '#ffffff',
-      main: '#f4f4f4',
+      main: '#DECBA4',
       dark: '#DFDFDF',
       contrastText: '#000',
     },

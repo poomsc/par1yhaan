@@ -54,7 +54,7 @@ const HomePage: React.FC = observer(
                   />
                 ))
               ) : (
-                <ReactLoading type={'spinningBubbles'} color="#20639b" className="-mt-16" />
+                <ReactLoading type={'spinningBubbles'} color="#5BA8A0" className="-mt-16" />
               )}
             </div>
           </div>

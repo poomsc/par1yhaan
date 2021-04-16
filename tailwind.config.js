@@ -82,8 +82,8 @@ module.exports = {
     backdropSepia: (theme) => theme('sepia'),
     backgroundColor: (theme) => ({
       ...theme('colors'),
-      primary: '#20639b',
-      'primary-dark': '#173f5f',
+      primary: '#5BA8A0',
+      'primary-dark': '#3B5284',
     }),
     backgroundImage: {
       none: 'none',
@@ -138,8 +138,8 @@ module.exports = {
     },
     borderColor: (theme) => ({
       ...theme('colors'),
-      primary: '#20639b',
-      'primary-dark': '#173f5f',
+      primary: '#5BA8A0',
+      'primary-dark': '#3B5284',
     }),
     borderOpacity: (theme) => theme('opacity'),
     borderRadius: {
@@ -543,8 +543,8 @@ module.exports = {
     },
     minWidth: {
       0: '0px',
-      '12': '3rem',
-      '50': '11.2rem',
+      12: '3rem',
+      50: '11.2rem',
       '1/4': '25%',
       '1/2': '50%',
       '3/4': '75%',
@@ -698,8 +698,8 @@ module.exports = {
     },
     textColor: (theme) => ({
       ...theme('colors'),
-      primary: '#20639b',
-      'primary-dark': '#173f5f',
+      primary: '#5BA8A0',
+      'primary-dark': '#3B5284',
     }),
     textOpacity: (theme) => theme('opacity'),
     transformOrigin: {
