@@ -1,5 +1,5 @@
 import { action, observable, makeAutoObservable } from 'mobx';
-import { writeUserData } from 'services/databaseService';
+import { writeUserData, readUserData, updateCurrentDenominator } from 'services/databaseService';
 import { auth } from 'services/firebase';
 
 export interface IUserStore {
@@ -25,38 +25,52 @@ export class UserStore implements IUserStore {
 
   @observable isLogin = false;
   @observable userEmail = '';
-  @observable currentUser = {};
+  @observable currentUser = { uid: '' };
   @observable favoriteList = [] as number[];
   @observable joinedPartyList = [] as number[];
 
-  @action addFavorite = (value: number): void => {
-    this.favoriteList.push(value);
-    this.updateUserInfo();
-  };
-  @action removeFavorite = (value: number): void => {
-    this.favoriteList = removeItemOnce(this.favoriteList, value);
+  @action addFavorite = (partyId: number): void => {
+    this.favoriteList.push(partyId);
     this.updateUserInfo();
   };
 
-  @action fetchData = (): void => {
-    console.log('fetch user data');
+  @action removeFavorite = (partyId: number): void => {
+    this.favoriteList = removeItemOnce(this.favoriteList, partyId);
+    this.updateUserInfo();
+  };
 
-    this.isLogin = true;
-    this.favoriteList = [];
-    this.joinedPartyList = [];
+  @action joinParty = (partyId: number, currentDenominator: number): void => {
+    console.log('join ', partyId);
+    this.joinedPartyList.push(partyId);
+    this.updateUserInfo();
+    updateCurrentDenominator(partyId, currentDenominator + 1);
+  };
+
+  @action unjoinParty = (partyId: number, currentDenominator: number): void => {
+    this.joinedPartyList = removeItemOnce(this.joinedPartyList, partyId);
+    this.updateUserInfo();
+    console.log("cur", currentDenominator);
+    
+    updateCurrentDenominator(partyId, currentDenominator - 1);
+  };
+
+  @action fetchUserData = async () => {
+    const uData = await readUserData(this.currentUser.uid);
+    this.favoriteList = uData['favoriteList'] || [];
+    this.joinedPartyList = uData['joinedPartyList'] || [];
   };
 
   @action setUser = (user: any) => {
-    console.log(user);
     if (!user) return;
     this.currentUser = user;
     this.userEmail = user.email;
-    this.isLogin = typeof user.email === 'string' && user.email.length > 0;
+    this.isLogin = typeof user.uid === 'string' && user.uid.length > 0;
+    this.fetchUserData();
   };
 
   @action logout = async () => {
     this.isLogin = false;
-    this.currentUser = {};
+    this.currentUser = { uid: '' };
     this.userEmail = '';
 
     return await auth.signOut();
@@ -71,7 +85,9 @@ export class UserStore implements IUserStore {
   };
 
   @action updateUserInfo = () => {
+    if (!this.currentUser.uid) return;
     writeUserData({
+      uid: this.currentUser.uid,
       email: this.userEmail,
       favoriteList: this.favoriteList,
       joinedPartyList: this.joinedPartyList,

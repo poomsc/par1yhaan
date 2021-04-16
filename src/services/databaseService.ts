@@ -1,18 +1,27 @@
 import { database } from 'services/firebase';
-import { increasePartyId, getCurrentPartyId } from './serviceUtils';
+import { increasePartyId, getCurrentPartyId } from 'utils/serviceUtils';
 
 type userDataType = {
+  uid: string;
   email: string;
   favoriteList: number[];
   joinedPartyList: number[];
 };
 
-async function writeUserData({ email, favoriteList, joinedPartyList }: userDataType) {
-  database.ref('users/' + email).set({
+async function writeUserData({ uid, email, favoriteList, joinedPartyList }: userDataType) {
+  database.ref('users/' + uid).set({
     email,
     favoriteList,
     joinedPartyList,
   });
+}
+
+async function readUserData(email: string) {
+  const response = await database
+    .ref()
+    .child('users/' + email)
+    .get();
+  return response.val();
 }
 
 async function createParty(data: any) {
@@ -23,7 +32,13 @@ async function createParty(data: any) {
 
 async function getAllParty() {
   const response = await database.ref().child('party').get();
-  return response.val()
+  return response.val();
 }
 
-export { writeUserData, createParty, getAllParty };
+async function updateCurrentDenominator(partyId: number, newDenominator: number) {
+  // var updates: any;
+  // updates['/party/' + partyId + '/currentDenominator'] = newDenominator;
+  return await database.ref().child('/party/' + partyId).update({'currentDenominator': newDenominator});
+}
+
+export { writeUserData, readUserData, createParty, getAllParty, updateCurrentDenominator };
