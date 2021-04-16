@@ -31,15 +31,18 @@ const CardItem = observer(
     const statusDescription = ['ว่าง', 'หมดเวลา', 'เต็ม'];
 
     const {
-      userStore: { addFavorite, removeFavorite, joinParty, unjoinParty },
+      userStore: { isLogin, addFavorite, removeFavorite, joinParty, unjoinParty },
+      applicationStore: { setAlertInfo },
     } = useStores();
 
     const handleOnFavorite = () => {
+      if (!isLogin) setAlertInfo({ message: 'ลงชื่อเข้าใช้ก่อนบันทึกรายการโปรด', type: 'warning' });
       if (isFavorite) removeFavorite(index);
       else addFavorite(index);
     };
 
     const handleOnJoinParty = () => {
+      if (!isLogin) setAlertInfo({ message: 'ลงชื่อเข้าใช้ก่อนเข้าร่วมปาร์ตี้', type: 'warning' });
       if (isJoined) unjoinParty(index, currentDenominator);
       else joinParty(index, currentDenominator);
     };
@@ -117,7 +120,7 @@ const CardItem = observer(
               <div>
                 <Button
                   variant="contained"
-                  color={!isJoined ? "primary" : "secondary"}
+                  color={!isJoined ? 'primary' : 'secondary'}
                   disabled={itemStatus > 0}
                   onClick={() => handleOnJoinParty()}
                 >

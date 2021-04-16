@@ -35,23 +35,26 @@ export class UserStore implements IUserStore {
   @observable joinedPartyList = [] as number[];
 
   @action addFavorite = (partyId: number): void => {
+    if (!this.isLogin) return;
     this.favoriteList.push(partyId);
     this.updateUserInfo();
   };
 
   @action removeFavorite = (partyId: number): void => {
+    if (!this.isLogin) return;
     this.favoriteList = removeItemOnce(this.favoriteList, partyId);
     this.updateUserInfo();
   };
 
   @action joinParty = (partyId: number, currentDenominator: number): void => {
-    console.log('join ', partyId);
+    if (!this.isLogin) return;
     this.joinedPartyList.push(partyId);
     this.updateUserInfo();
     updateCurrentDenominator(partyId, currentDenominator + 1);
   };
 
   @action unjoinParty = (partyId: number, currentDenominator: number): void => {
+    if (!this.isLogin) return;
     this.joinedPartyList = removeItemOnce(this.joinedPartyList, partyId);
     this.updateUserInfo();
     console.log('cur', currentDenominator);
@@ -77,6 +80,8 @@ export class UserStore implements IUserStore {
     this.isLogin = false;
     this.currentUser = { uid: '' };
     this.userEmail = '';
+    this.favoriteList = [] as number[];
+    this.joinedPartyList = [] as number[];
 
     return await auth.signOut();
   };
