@@ -7,25 +7,30 @@ import { Redirect } from 'react-router';
 import { useStores } from 'hooks/useStore';
 import { Link, useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
+import { validateEmail } from 'utils';
 
 const SigninPage: React.FC = observer(
   (): JSX.Element => {
     const [email, setEmail] = useState<string>();
     const [password, setPassword] = useState<string>();
+    const [invalidEmail, setInvalidEmail] = useState(false);
     const {
       userStore: { isLogin, login },
+      applicationStore: { setAlertInfo },
     } = useStores();
     const history = useHistory();
 
     const handleSubmit = async () => {
-      console.log('hello');
+      setInvalidEmail(!validateEmail(email));
+
+      if (invalidEmail) return;
       if (!email || !password) return;
-      console.log('world');
       try {
         await login(email, password);
         history.push('/home');
       } catch (e) {
         console.log(e);
+        setAlertInfo({ message: e.message, type: 'danger' });
       }
     };
 
@@ -46,6 +51,8 @@ const SigninPage: React.FC = observer(
                 label="อีเมล"
                 margin="normal"
                 onChange={(event) => setEmail(event.target.value)}
+                error={invalidEmail}
+                helperText={invalidEmail && 'อีเมลไม่ถูกต้อง'}
               />
               <TextField
                 required
@@ -58,6 +65,7 @@ const SigninPage: React.FC = observer(
               />
               <br />
               <Button
+                type="submit"
                 variant="contained"
                 color="primary"
                 style={{ minWidth: '180px', margin: 'auto' }}

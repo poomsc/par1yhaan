@@ -40,9 +40,8 @@ const CardItem = observer(
     };
 
     const handleOnJoinParty = () => {
-      console.log('had join', index);
-      if (isJoined) unjoinParty(index);
-      else joinParty(index);
+      if (isJoined) unjoinParty(index, currentDenominator);
+      else joinParty(index, currentDenominator);
     };
 
     useEffect(() => {
@@ -112,16 +111,15 @@ const CardItem = observer(
                   </p>
                 </div>
               </div>
-              <div onClick={() => handleOnJoinParty()}>
-                {isJoined ? (
-                  <Button variant="contained" color="secondary">
-                    UNJOIN
-                  </Button>
-                ) : (
-                  <Button variant="contained" color="primary">
-                    JOIN
-                  </Button>
-                )}
+              <div>
+                <Button
+                  variant="contained"
+                  color={!isJoined ? 'primary' : 'secondary'}
+                  disabled={itemStatus > 0}
+                  onClick={() => handleOnJoinParty()}
+                >
+                  {!isJoined ? 'JOIN' : 'UNJOIN'}
+                </Button>
               </div>
             </div>
           </div>

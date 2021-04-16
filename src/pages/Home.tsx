@@ -14,23 +14,24 @@ const HomePage: React.FC = observer(
     const {
       userStore: { favoriteList, joinedPartyList },
     } = useStores();
-    // const [passEvent, setPassEvent] = useState<eventType[]>();
-    // const [currentEvent, setCurrentEvent] = useState<eventType[]>();
 
     useEffect(() => {
-      getAllParty()
-        .then((data) =>
-          Object.keys(data).map(function (index) {
-            data[index].id = parseInt(index);
-            return data[index];
-          }),
-        )
-        .then((data) => {
-          const currentEvent = data.filter((e) => Date.parse(e.expDate) > Date.now());
-          const passEvent = data.filter((e) => Date.parse(e.expDate) <= Date.now());
-          setEventData(currentEvent.concat(passEvent));
-        })
-        .catch((e) => console.log(e));
+      const interval = setInterval(() => {
+        getAllParty()
+          .then((data) =>
+            Object.keys(data).map(function (index) {
+              data[index].id = parseInt(index);
+              return data[index];
+            }),
+          )
+          .then((data) => {
+            const currentEvent = data.filter((e) => Date.parse(e.expDate) > Date.now());
+            const passEvent = data.filter((e) => Date.parse(e.expDate) <= Date.now());
+            setEventData(currentEvent.concat(passEvent));
+          })
+          .catch((e) => console.log(e));
+      }, 2500);
+      return () => clearInterval(interval);
     }, []);
 
     return (

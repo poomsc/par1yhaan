@@ -5,6 +5,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { auth } from 'services/firebase';
 import { observer } from 'mobx-react';
 import { useStores } from 'hooks/useStore';
+import AlertModal from 'components/Modal/AlertModal';
 
 const theme = createMuiTheme({
   palette: {
@@ -35,6 +36,7 @@ const App = observer(() => {
   return (
     <ThemeProvider theme={theme}>
       <Routes />
+      <AlertModal />
     </ThemeProvider>
   );
 });

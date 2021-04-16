@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { Button, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  FormControl,
+  FormHelperText,
+} from '@material-ui/core';
 import Layout from 'containers/Layout';
 import { Helmet } from 'react-helmet';
 import { observer } from 'mobx-react';
@@ -14,7 +21,9 @@ const RegisterPage: React.FC = observer(
     const [email, setEmail] = useState<string>();
     const [password, setPassword] = useState<string>();
     const [confirmPassword, setConfirmPassword] = useState<string>();
-    const [invalidFormat, setInvalidFormat] = useState(false);
+    const [invalidEmail, setInvalidEmail] = useState(false);
+    const [invalidPassword, setInvalidPassword] = useState(false);
+    const [invalidAgreement, setInvalidAgreement] = useState(false);
     const history = useHistory();
 
     const {
@@ -22,12 +31,16 @@ const RegisterPage: React.FC = observer(
     } = useStores();
 
     const handleSubmit = async () => {
-      const validate = validateEmail(email) && validatePassword(password, confirmPassword);
-      setInvalidFormat(validate && isAgree);
-      if (!validate || !email || !password) return;
+      setInvalidEmail(!validateEmail(email));
+      setInvalidPassword(!validatePassword(password, confirmPassword));
+      setInvalidAgreement(!isAgree);
+
+      if (invalidEmail || invalidPassword || invalidAgreement) return;
+
+      if (!email || !password) return;
       try {
         await signup(email, password);
-        history.push('/signin')
+        history.push('/signin');
       } catch (e) {
         console.log(e);
       }
@@ -50,8 +63,8 @@ const RegisterPage: React.FC = observer(
                 label="อีเมล"
                 margin="normal"
                 onChange={(event) => setEmail(event.target.value)}
-                error={!validateEmail(email)}
-                helperText={!validateEmail(email) && 'Incorrect format.'}
+                error={invalidEmail}
+                helperText={invalidEmail && 'อีเมลไม่ถูกต้อง'}
               />
               <TextField
                 required
@@ -70,24 +83,27 @@ const RegisterPage: React.FC = observer(
                 autoComplete="current-password"
                 margin="normal"
                 onChange={(event) => setConfirmPassword(event.target.value)}
-                error={!validatePassword(password, confirmPassword)}
-                helperText={
-                  !validatePassword(password, confirmPassword) &&
-                  'Password not match or less than 5 charactor'
-                }
+                error={invalidPassword}
+                helperText={invalidPassword && 'รหัสผ่านไม่ตรงกัน หรือ มีจำนวนน้อยกว่า 5 ตัว'}
               />
-              <FormControlLabel
-                style={{ margin: '20px 0 0 0' }}
-                control={
-                  <Checkbox
-                    checked={isAgree}
-                    onChange={() => setIsAgree(!isAgree)}
-                    name="agreement"
-                    color="primary"
-                  />
-                }
-                label="ฉันยอมรับเงื่อนไขและข้อตกลงเกี่ยวกับการใช้งาน"
-              />
+
+              <FormControl required error={invalidAgreement} component="fieldset">
+                <FormControlLabel
+                  style={{ margin: '20px 0 0 0' }}
+                  control={
+                    <Checkbox
+                      checked={isAgree}
+                      onChange={() => setIsAgree(!isAgree)}
+                      name="agreement"
+                      color="primary"
+                    />
+                  }
+                  label="ฉันยอมรับเงื่อนไขและข้อตกลงเกี่ยวกับการใช้งาน"
+                />
+                {invalidAgreement && (
+                  <FormHelperText>โปรดอ่านข้อตกลงและยอมรับเงื่อนไข</FormHelperText>
+                )}
+              </FormControl>
               <br />
               <Button
                 variant="contained"
@@ -102,7 +118,6 @@ const RegisterPage: React.FC = observer(
                 ฉันมีบัญชีอยู่แล้ว
               </Link>
             </form>
-            {invalidFormat && <p></p>}
           </Layout>
         </>
       );
