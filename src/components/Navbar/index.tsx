@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import React from 'react';
 import { MdAccountCircle } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
 import logo from 'assets/logo/goose.png';
+import { observer } from 'mobx-react';
+import { useStores } from 'hooks/useStore';
 
 const navigation = [
   { name: 'Explore Party', link: '/home' },
@@ -18,8 +17,20 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Example() {
+const Navbar = observer(() => {
   const currentPath = window.location.pathname;
+  const {
+    userStore: { isLogin, logout },
+  } = useStores();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <Disclosure as="nav" className="bg-primary w-full fixed z-50">
       {({ open }) => (
@@ -38,8 +49,10 @@ export default function Example() {
               </div>
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex-shrink-0 flex items-center">
-                  <img className="block lg:hidden h-8 w-auto" src={logo} alt="Par1yHaan-logo" />
-                  <img className="hidden lg:block h-8 w-auto" src={logo} alt="Par1yHaan-logo" />
+                  <Link to="/home">
+                    <img className="block lg:hidden h-8 w-auto" src={logo} alt="Par1yHaan-logo" />
+                    <img className="hidden lg:block h-8 w-auto" src={logo} alt="Par1yHaan-logo" />
+                  </Link>
                 </div>
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-4">
@@ -49,7 +62,7 @@ export default function Example() {
                         className={classNames(
                           currentPath === item.link
                             ? 'bg-primary-dark text-white'
-                            : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                            : 'text-gray-300 hover:bg-primary-dark hover:text-white',
                           'px-3 py-2 rounded-md text-sm font-medium',
                         )}
                         aria-current={currentPath === item.link ? 'page' : undefined}
@@ -61,7 +74,7 @@ export default function Example() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                <button className="bg-primary-dark p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
@@ -71,13 +84,8 @@ export default function Example() {
                   {({ open }) => (
                     <>
                       <div>
-                        <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                          <span className="sr-only">Open user menu</span>
-                          <img
-                            className="h-8 w-8 rounded-full"
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                            alt=""
-                          />
+                        <Menu.Button className="bg-primary-dark flex rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                          <MdAccountCircle className="text-white h-8 w-8" aria-hidden="true" />
                         </Menu.Button>
                       </div>
                       <Transition
@@ -94,18 +102,35 @@ export default function Example() {
                           static
                           className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                         >
-                          <Menu.Item>
-                            {({ active }) => (
-                              <p
-                                className={classNames(
-                                  active ? 'bg-gray-100' : '',
-                                  'block px-4 py-2 text-sm text-gray-700',
-                                )}
-                              >
-                                Logout
-                              </p>
-                            )}
-                          </Menu.Item>
+                          {isLogin ? (
+                            <Menu.Item>
+                              {({ active }) => (
+                                <div
+                                  className={classNames(
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-2 text-sm text-gray-700',
+                                  )}
+                                  onClick={() => handleLogout()}
+                                >
+                                  Logout
+                                </div>
+                              )}
+                            </Menu.Item>
+                          ) : (
+                            <Menu.Item>
+                              {({ active }) => (
+                                <Link
+                                  to="/signin"
+                                  className={classNames(
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-2 text-sm text-gray-700',
+                                  )}
+                                >
+                                  Sign in
+                                </Link>
+                              )}
+                            </Menu.Item>
+                          )}
                         </Menu.Items>
                       </Transition>
                     </>
@@ -122,8 +147,8 @@ export default function Example() {
                   key={item.name}
                   className={classNames(
                     currentPath === item.link
-                      ? 'bg-gray-900 text-white'
-                      : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                      ? 'bg-primary text-white'
+                      : 'text-gray-300 hover:bg-primary-dark hover:text-white',
                     'px-3 py-2 rounded-md text-sm font-medium',
                   )}
                   aria-current={currentPath === item.link ? 'page' : undefined}
@@ -137,4 +162,6 @@ export default function Example() {
       )}
     </Disclosure>
   );
-}
+});
+
+export default Navbar;

@@ -1,6 +1,10 @@
 import './App.css';
+import React, { useEffect } from 'react';
 import Routes from 'routes/index';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { auth } from 'services/firebase';
+import { observer } from 'mobx-react';
+import { useStores } from 'hooks/useStore';
 
 const theme = createMuiTheme({
   palette: {
@@ -19,12 +23,20 @@ const theme = createMuiTheme({
   },
 });
 
-function App() {
+const App = observer(() => {
+  const {
+    userStore: { setUser },
+  } = useStores();
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => setUser(user));
+    return unsubscribe;
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <Routes />
     </ThemeProvider>
   );
-}
+});
 
 export default App;
